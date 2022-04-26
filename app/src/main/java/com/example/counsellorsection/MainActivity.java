@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 import com.example.counsellorsection.retrofit.myservice;
 import com.example.counsellorsection.retrofit.pojologinregister;
 import com.example.counsellorsection.retrofit.retrofitclient;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import retrofit2.Call;
@@ -63,20 +66,25 @@ public class MainActivity extends AppCompatActivity {
 
     public void loginuser(String email, String password) {
         client=retrofitclient.getInstance().create(myservice.class);
-        client.loginUser(email,password).enqueue(new Callback<pojologinregister>() {
+        client.loginUser(email,password).enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(Call<pojologinregister> call, Response<pojologinregister> response) {
-                pojologinregister answer=response.body();
-                if(answer.getAnswer().equals("sucess")){
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                String answer=new Gson().toJson(response.body());
+                Log.d("responselogin", "onResponse: "+answer);
+//                Log.d("loginresponse", ""+answer.getAnswer());
+                if(answer.length()>100){
                     Toast.makeText(MainActivity.this, "login success", Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(getApplicationContext(),register.class);
                     startActivity(intent);
                     finish();
                 }
+                else{
+                    Toast.makeText(MainActivity.this, "Some error occured", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
-            public void onFailure(Call<pojologinregister> call, Throwable t) {
+            public void onFailure(Call<JsonObject> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Wrong credentials", Toast.LENGTH_SHORT).show();
             }
         });

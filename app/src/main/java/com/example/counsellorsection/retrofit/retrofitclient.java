@@ -14,7 +14,7 @@ public class retrofitclient {
         if(instance==null){
             Gson gson = new GsonBuilder().create();
             instance= new Retrofit.Builder()
-                    .baseUrl("http://10.0.2.2:3000/")
+                    .baseUrl("https://innoattendancesystem.herokuapp.com/api/user/")
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build();

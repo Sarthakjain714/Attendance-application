@@ -1,16 +1,19 @@
 package com.example.counsellorsection.retrofit;
 
+import com.google.gson.annotations.SerializedName;
+
 public class pojologinregister {
-    private String answer;
+
+    private String response;
     public pojologinregister(String message){
-        this.answer=message;
+        this.response=message;
     }
 
     public String getAnswer() {
-        return answer;
+        return response;
     }
 
     public void setAnswer(String answer) {
-        this.answer = answer;
+        this.response= answer;
     }
 }
